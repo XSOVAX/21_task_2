@@ -71,6 +71,25 @@ string getUserString(const string& text)
 }
 
 
+bool isNumeric(string& number)
+{
+    if (number.begin() == number.end()) return false;
+    auto it = find_if(number.begin(), number.end(), [](char const& c) {return !isdigit(c); });
+    return it == number.end();
+}
+
+int getNumber(string text)
+{
+    string user_input;
+    while (true)
+    {
+        user_input = getUserString(text);
+        if (isNumeric(user_input)) break;
+        cout << "Это должно быть число!\n";
+    }
+    return stoi(user_input);
+}
+
 
 int main()
 {
