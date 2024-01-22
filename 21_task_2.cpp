@@ -1,5 +1,7 @@
 ﻿#include <iostream>
 #include <vector>
+#include <string>
+#include <sstream>
 
 using namespace std;
 
@@ -44,6 +46,21 @@ struct Vilage
 public:
     vector<Area>areas;
 };
+
+vector<string> splitString(string const& str, char const& separator)
+{
+    vector<string> words;
+    string word;
+    stringstream ss(str);
+    while (getline(ss, word, separator))
+    {
+        if (word.length() != 0) {
+            words.push_back(word);
+        }
+    }
+    return words;
+}
+
 
 int main()
 {
