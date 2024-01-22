@@ -62,6 +62,16 @@ vector<string> splitString(string const& str, char const& separator)
 }
 
 
+string getUserString(const string& text)
+{
+    printf("%s", text.c_str());
+    string user_input;
+    getline(cin, user_input);
+    return splitString(user_input, ' ')[0];
+}
+
+
+
 int main()
 {
 
