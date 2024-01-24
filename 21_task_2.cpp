@@ -91,8 +91,29 @@ int getNumber(string text)
 }
 
 
-int main()
+void fillingArea(Area &area)
 {
 
+}
+
+void createMyVillage()
+{
+    Vilage myVilage;
+    int countAreas = getNumber("Введите количество участков в поселке : ");
+    myVilage.areas.resize(countAreas);
+    bool wantFillingInData{true};
+    int countFillingAreas{0};
+    while(wantFillingInData and countFillingAreas < countAreas)
+    {
+        int countArea = getNumber("Введите номер участка для заполнения : ");
+        fillingArea(myVilage.areas[countArea]);
+    }
+    
+}
+
+int main()
+{
+    setlocale(LC_ALL, "Russian");
+    createMyVillage();
 	return 0;
 }
