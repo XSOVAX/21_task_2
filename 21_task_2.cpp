@@ -90,11 +90,55 @@ int getNumber(string text)
     return stoi(user_input);
 }
 
+struct Building {
+public:
+    enum class BuildingType { undefined, house, garage, shed, bathHouse};
+    vector<string> buildingNames = { "house", "garage", "shed", "bathHouse", "undefined" };
+    BuildingType type = BuildingType::undefined;
+    bool isStove{ false };
+    int maxFloorInHouse{ 3 };
+    vector<Floor>floors;
+};
 
+int getNumberRange(string text, int to, int from)
+{
+    int number;
+    do {
+        cout << "Введите число в диапозоне от " << to << " до " << from << endl;
+        number = getNumber(text);
+    } while (number < to or number > from);
+    return number;
+}
 
 Building fillBildingInfo()
 {
     Building newBuilding;
+    cout << "Какого типа ваше строение:\n";
+    for(int i = 0; i < newBuilding.buildingNames.size(); ++i)
+    {
+        cout << i + 1 << ". " << newBuilding.buildingNames[i] << endl;
+    }
+    int typeBuilding = getNumberRange("Введите номер подходящего типа :", 1, newBuilding.buildingNames.size());
+    switch(typeBuilding){
+        case 1:
+        {
+            newBuilding.type = Building::BuildingType::house;
+        }
+        case 2:
+        {
+            newBuilding.type = Building::BuildingType::garage;
+        }
+        case 3:
+        {
+            newBuilding.type = Building::BuildingType::shed;
+        }
+        case 4:
+        {
+            newBuilding.type = Building::BuildingType::bathHouse;
+        }
+        default:
+            newBuilding.type = Building::BuildingType::undefined;
+    }
     return newBuilding;
 }
 
