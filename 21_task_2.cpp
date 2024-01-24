@@ -91,11 +91,34 @@ int getNumber(string text)
 }
 
 
-void fillingArea(Area &area)
-{
 
+Building fillBildingInfo()
+{
+    Building newBuilding;
+    return newBuilding;
 }
 
+void fillingArea(Area &area)
+{
+    string message;
+    if (area.buildings.empty()){
+        message = "Введите количество зданий на участке : ";
+    }
+    else
+    {
+        message = "На участке уже зарегистрированно " 
+        + to_string(area.buildings.size())
+        + "домов\n. Общей площадью = " 
+        + to_string(area.square) 
+        + "\nСколько домов вы хотите добавить : ";
+    }
+        int countBildingsInArea = getNumber(message);
+
+        for(int i = 0; i < countBildingsInArea; ++i)
+        {
+            area.buildings.push_back(fillBildingInfo());
+        }
+}
 void createMyVillage()
 {
     Vilage myVilage;
