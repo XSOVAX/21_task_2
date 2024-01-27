@@ -52,7 +52,7 @@ public:
         bathHouse,
         undefined
     };
-    vector<string> buildingNames = {"house", "garage", "shed", "bathHouse", "undefined"};
+    vector<string> buildingNames = { "undefined","house", "garage", "shed", "bathHouse" };
     BuildingType type = BuildingType::undefined;
     bool isStove{false};
     int maxFloorInHouse{3};
@@ -146,45 +146,72 @@ void whatIsArea(Building &build)
     int length = getNumber("Введите длину : ");
     square = width * length;
     } while(square <= 0);
-    cout << "Площадь равна : " << square;
+    cout << "Площадь равна : " << square << endl;
     build.square = square;
 }
 
-Building fillBuildingInfo()
+Room newRoom(Building& build)
+{
+    Room thisRoom;
+    cout << "Какого типа эта комната ?\n";
+    for (int i = 0; i < thisRoom.roomNames.size(); ++i)
+    {
+        cout << i + 1 << ". " << thisRoom.roomNames[i] << endl;
+    }
+    int numberRoomType = getNumberRange("Введите номер подходящего типа комнаты : ", 1, thisRoom.roomNames.size()) - 1;
+    thisRoom.type = (Room::RoomType)numberRoomType;
+    do { thisRoom.length = getNumber("Введите длинну комнаты : "); } while (thisRoom.length <= 0);
+    do { thisRoom.width = getNumber("Введите ширину комнаты : "); } while (thisRoom.width <= 0);
+    build.square += thisRoom.length * thisRoom.width;
+    return thisRoom;
+}
+
+void whatKindOfHouse(Building& build)
+{
+    buildingHaveStove(build);
+    int count_floor = getNumberRange("Сколько этажей в ваше доме? ", 1, build.maxFloorInHouse);
+    build.floors.resize(count_floor);
+    int type_floor = 0;
+    for (auto floor : build.floors)
+    {
+        floor.type = (Floor::FloorType)type_floor;
+        cout << "Этаж " << floor.floorNames[type_floor] << endl;
+        int count_rooms = getNumberRange("Сколько комнат на этаже? ", 1, floor.maxRoomCount);
+        for (int i = 0; i < count_rooms; ++i)
+        {
+            floor.rooms.push_back(newRoom(build));
+        }
+        type_floor++;
+    }
+}
+
+Building fillBuildingInfo(Area &area)
 {
     Building newBuilding;
     cout << "Какого типа ваше строение:\n";
-    for (int i = 0; i < newBuilding.buildingNames.size(); ++i)
+    for (int i = 1; i < newBuilding.buildingNames.size(); ++i)
     {
-        cout << i + 1 << ". " << newBuilding.buildingNames[i] << endl;
+        cout << i << ". " << newBuilding.buildingNames[i] << endl;
     }
-    int typeBuilding = getNumberRange("Введите номер подходящего типа :", 1, newBuilding.buildingNames.size());
-    switch (typeBuilding)
+    int typeBuilding = getNumberRange("Введите номер подходящего типа : ", 1, newBuilding.buildingNames.size() - 1);
+    newBuilding.type = (Building::BuildingType)typeBuilding;
+    if (typeBuilding == 1) 
     {
-    case 1:
+        whatKindOfHouse(newBuilding);
+    }
+    else 
     {
-        newBuilding.type = Building::BuildingType::house;
-        buildingHaveStove(newBuilding);
+        if (typeBuilding == 4)
+        {
+            buildingHaveStove(newBuilding);
+            whatIsArea(newBuilding);
+        }
+        else 
+        {
+            whatIsArea(newBuilding);
+        }
     }
-    case 2:
-    {
-        newBuilding.type = Building::BuildingType::garage;
-        whatIsArea(newBuilding);
-    }
-    case 3:
-    {
-        newBuilding.type = Building::BuildingType::shed;
-        whatIsArea(newBuilding);
-    }
-    case 4:
-    {
-        newBuilding.type = Building::BuildingType::bathHouse;
-        buildingHaveStove(newBuilding);
-        whatIsArea(newBuilding);
-    }
-    default:
-        newBuilding.type = Building::BuildingType::undefined;
-    }
+    area.square += newBuilding.square;
     return newBuilding;
 }
 
@@ -197,13 +224,18 @@ void fillingArea(Area &area)
     }
     else
     {
-        message = "На участке уже зарегистрированно " + to_string(area.buildings.size()) + "домов\n. Общей площадью = " + to_string(area.square) + "\nСколько домов вы хотите добавить : ";
+        message = "На участке уже зарегистрированно зданий : " 
+            + to_string(area.buildings.size()) 
+            + ".\nОбщей площадью = " 
+            + to_string(area.square) 
+            + "\nСколько домов вы хотите добавить : ";
     }
     int countBildingsInArea = getNumber(message);
 
     for (int i = 0; i < countBildingsInArea; ++i)
     {
-        area.buildings.push_back(fillBuildingInfo());
+        cout << "Здание # " << i + 1 << endl;
+        area.buildings.push_back(fillBuildingInfo(area));
     }
 }
 void createMyVillage()
@@ -215,8 +247,9 @@ void createMyVillage()
     int countFillingAreas{0};
     while (wantFillingInData and countFillingAreas < countAreas)
     {
-        int countArea = getNumber("Введите номер участка для заполнения : ");
-        fillingArea(myVilage.areas[countArea]);
+        int countArea = getNumberRange("Введите номер участка для заполнения : ", 1, myVilage.areas.size());
+        fillingArea(myVilage.areas[countArea - 1]);
+        countFillingAreas++;
     }
 }
 
