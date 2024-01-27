@@ -17,10 +17,9 @@ public:
         restroom,
         playroom,
         living,
-        main,
         undefined
     };
-    vector<string> roomNames = {"bedroom", "kitchen", "bathroom", "restroom", "playroom", "living", "main", "undefined"};
+    vector<string> roomNames = {"спальня", "кухня", "ванна", "туалет", "игровая комната", "гостиная", "другой тип"};
     RoomType type = RoomType::undefined;
     int length{2000};
     int width{2000};
@@ -36,7 +35,7 @@ public:
         third,
         undefined
     };
-    vector<string> floorNames = {"first", "second", "third", "undefined"};
+    vector<string> floorNames = {"первый", "второй", "третий", "чердак"};
     FloorType type = FloorType::undefined;
     int height{2600};
     int maxRoomCount{4};
@@ -53,7 +52,7 @@ public:
         bathHouse,
         undefined
     };
-    vector<string> buildingNames = { "undefined","house", "garage", "shed", "bathHouse" };
+    vector<string> buildingNames = { "undefined","дом", "гараж", "сарай", "баня" };
     BuildingType type = BuildingType::undefined;
     bool isStove{false};
     int maxFloorInHouse{3};
